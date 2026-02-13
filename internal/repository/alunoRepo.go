@@ -9,6 +9,6 @@ import (
 
 )
 
-func NewAluno() {
+func New() {
 
 }

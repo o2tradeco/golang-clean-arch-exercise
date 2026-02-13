@@ -1,3 +1,16 @@
+* DDD + Clean
+
+┌────────────────────────────┐
+│        Interface           │  ← HTTP, REST, GraphQL
+├────────────────────────────┤
+│        Application         │  ← UseCases
+├────────────────────────────┤
+│          Domain            │  ← Entidades + Regras
+├────────────────────────────┤
+│       Infrastructure       │  ← Banco, API externa
+└────────────────────────────┘
+
+
 /meu-projeto
   /internal
     /handler      <-- (O "Roteador") Recebe o HTTP, valida JSON, responde 200/400/500.
@@ -11,9 +24,6 @@
   Service (Domain) É onde o Go brilha com Interfaces. Definir Interfaces. O Service não sabe qual banco existe, ele só sabe que existe um "salvador de dados".
 
   Repository Implementa a Interface do Service. Escrever o SQL ou usar um ORM. É a única camada que "conhece" a tecnologia do banco.
-
-
-
 
 
 Exemplo Prático (Snippet Go)

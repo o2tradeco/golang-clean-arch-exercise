@@ -9,7 +9,3 @@ package handler
 import (
 
 )
-
-func AlunoHandler() {
-	
-}
