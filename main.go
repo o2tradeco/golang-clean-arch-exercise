@@ -5,19 +5,32 @@ import (
 	"fmt"
 
 	"golang-excercise/internal/entity"
+	// "golang-excercise/internal/repository"
 )
 
-// O Service define o que ele PRECISA (Contrato)
-// Ao realizar a implantação da interface precisa satisfazer o que foi estabelecido
+// ===== O Service define o que ele PRECISA (Contrato)
+// ===== Ao realizar a implantação da interface precisa satisfazer o que foi estabelecido
 type AlunoRepository interface {
     Save(aluno entity.Aluno) error
 }
+// =====
 
+// ===== Implementação do repository
+type MemoryAlunoRepository struct{}
+
+func (r *MemoryAlunoRepository) Save(aluno entity.Aluno) error {
+	fmt.Printf("Aluno %v salvo com sucesso!\n", aluno)
+	return nil
+}
+// =====
+
+// ===== Isso faz pate do arquivo useCase.go
+// ===== Abstração usada no UseCase
 type Service struct {
 	// Abstração onde repo representa AlunoRepository
     repo AlunoRepository
 }
-
+// UseCase da aplicação, chama o repository
 func (s *Service) Matricular(nome string) error {
     // Regra de negócio: Aluno não pode ter nome vazio
     if nome == "" {
@@ -36,28 +49,26 @@ func (s *Service) Matricular(nome string) error {
 
 	return nil
 }
+// =====
 
-func (s *Service) Repo(aluno entity.Aluno) error {
-	fmt.Printf("O aluno %v foi salvo com sucesso no banco de dados\n", aluno)
-
-	return nil
-}
-
-// Crian instância *Service e retorna &Service
-func NewApp() *Service {
-	return &Service{}
-}
-
-func main() {
-	// Declara a variável service do tipo *Service
-	service := NewApp()
-
-	fmt.Printf("O tipo do nome: %T\n", service)
-
-	// Chama o método matricular do tipo *Service que retorna error ou nil
-	// Usa a variável err para representar o error
-	// Usar a variavel service para chamar Matricular que é do tipo *Service
-	err := service.Matricular("Marco"); if err != nil {
-		fmt.Printf("Deu erro no main.go ao chamar func Matricular")
+// ===== Construtir, bootstraper
+func NewService(repo AlunoRepository) *Service {
+	return &Service{
+		repo: repo,
 	}
 }
+// =====
+
+// ===== 
+func main() {
+
+	repo := &MemoryAlunoRepository{}
+
+	service := NewService(repo)
+
+	err := service.Matricular("Marco")
+	if err != nil {
+		fmt.Println("Erro:", err)
+	}
+}
+// ===== 
