@@ -5,19 +5,14 @@ import (
 	"fmt"
 
 	"golang-excercise/internal/entity"
-	// "golang-excercise/internal/repository"
 )
 
-// ===== O Service define o que ele PRECISA (Contrato)
-// ===== Ao realizar a implantação da interface precisa satisfazer o que foi estabelecido
-type AlunoRepository interface {
-    Save(aluno entity.Aluno) error
-}
-// =====
-
 // ===== Implementação do repository
+// ===== Cria o métoto Save do tipo MemoryAlunoRepository
+// ===== recebe aluno do tipo entity.Aluno
 type MemoryAlunoRepository struct{}
 
+// 
 func (r *MemoryAlunoRepository) Save(aluno entity.Aluno) error {
 	fmt.Printf("Aluno %v salvo com sucesso!\n", aluno)
 	return nil
@@ -51,6 +46,11 @@ func (s *Service) Matricular(nome string) error {
 }
 // =====
 
+// ===== O Service define o que ele PRECISA (Contrato)
+// ===== Ao realizar a implantação da interface precisa satisfazer o que foi estabelecido
+type AlunoRepository interface {
+    Save(aluno entity.Aluno) error
+}
 // ===== Construtir, bootstraper
 func NewService(repo AlunoRepository) *Service {
 	return &Service{
@@ -61,14 +61,18 @@ func NewService(repo AlunoRepository) *Service {
 
 // ===== 
 func main() {
-
+	// ===== Compilação da aplicação
+	// repo representa *MemoryAlunoRepository
 	repo := &MemoryAlunoRepository{}
-
+	// service representa *Service com 
 	service := NewService(repo)
-
+	// ===== 
+	
+	// ===== Aplicação em uso
 	err := service.Matricular("Marco")
 	if err != nil {
 		fmt.Println("Erro:", err)
 	}
+	// ====
 }
 // ===== 
